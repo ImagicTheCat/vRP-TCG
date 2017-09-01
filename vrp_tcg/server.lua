@@ -11,7 +11,14 @@ local cfg = module("vrp_tcg", "cfg/tcg")
 -- define parametric card item
 
 local function card_name(args)
-  return "<span class=\"tcgcard_name\" data-name=\""..(args[2] or "").."\">"..(args[2] or "").."</span> (TCG)"
+  local name = "<span class=\"tcgcard_name\" data-name=\""..(args[2] or "").."\">"..(args[2] or "").."</span>"
+  if args[3] == "s" then
+    name = name.." S (TCG)"
+  else
+    name = name.." (TCG)"
+  end
+
+  return name
 end
 
 local function card_description(args)
@@ -48,6 +55,10 @@ local css = [[
   background-image: url("nui://vrp_tcg/images/card_bgnormal.png");
 }
 
+.tcgcard.shiny{
+  background-image: url("nui://vrp_tcg/images/card_bgshiny.png");
+}
+
 .tcgcard > .over{
   position: absolute;
   top: 0;
@@ -56,6 +67,19 @@ local css = [[
   height: 100%;
   background-image: url("nui://vrp_tcg/images/card_bgnormal_over.png");
   z-index: 1;
+}
+
+.tcgcard.shiny > .over{
+  background-image: url("nui://vrp_tcg/images/card_bgshiny_over.png");
+}
+
+.tcgcard > .rank{
+  position: absolute;
+  left: 120px;
+  top: 0;
+  width: 60px;
+  height: 60px;
+  z-index: 3;
 }
 
 .tcgcard > .title{
@@ -68,7 +92,7 @@ local css = [[
   z-index: 2;
   font-size: 1.4em;
   font-weight: bold;
-  color: black;
+  color: white;
 }
 
 .tcgcard > .desc{
@@ -80,7 +104,7 @@ local css = [[
   padding: 6px;
   font-style: italic;
   text-align: center;
-  font-size: 1em;
+  font-size: 0.9em;
   color: rgba(0,0,0,0.75);
 }
 

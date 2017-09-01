@@ -24,6 +24,11 @@ function loadTCGCard(idname, cbr)
           url: repositories[rep]+"cards/"+idname+".json",
           success: function(data){ //success, card loaded
             data.repository = repositories[rep];
+            if(!data.rank) data.rank = 0;
+            if(!data.quote) data.quote = "";
+            if(!data.picture) data.picture = "";
+            if(!data.name) data.name = "";
+
             cards[idname] = data;
             cbr(data);
           },
@@ -40,9 +45,20 @@ function loadTCGCard(idname, cbr)
   }
 }
 
+var rank_colors = [
+  "rgb(0,0,0)",
+  "rgb(0,234,255)",
+  "rgb(244,200,0)",
+  "rgb(255,52,214)",
+  "rgb(0,255,115)"
+]
+
 defineDynamicClass("tcgcard", function(el){
   loadTCGCard(el.dataset.name, function(card){
     if(card){
+      if(el.dataset.shiny)
+        el.classList.add("shiny");
+
       var div_over = document.createElement("div");
       div_over.classList.add("over");
       el.appendChild(div_over);
@@ -50,6 +66,8 @@ defineDynamicClass("tcgcard", function(el){
       var div_title = document.createElement("div");
       div_title.classList.add("title");
       div_title.innerHTML = card.name;
+      div_title.style.textShadow = "0px 0px 8px "+(rank_colors[card.rank] || rank_colors[0]);
+      div_title.style.textShadow += "0px 0px 14px "+(rank_colors[card.rank] || rank_colors[0]);
       el.appendChild(div_title);
 
       var div_desc = document.createElement("div");
@@ -62,6 +80,12 @@ defineDynamicClass("tcgcard", function(el){
       var picture = card.repository+"images/cards/"+card.picture;
       div_pic.style.backgroundImage = "url(\""+picture+"\")";
       el.appendChild(div_pic);
+
+      var div_rank = document.createElement("div");
+      div_rank.classList.add("rank");
+      div_rank.style.backgroundImage = "url(\"nui://vrp_tcg/images/rank_"+card.rank+".png\")";
+
+      el.appendChild(div_rank);
     }
   });
 });
