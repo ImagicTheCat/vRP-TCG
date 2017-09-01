@@ -7,4 +7,8 @@ dependency "vrp"
 server_script "@vrp/lib/utils.lua"
 server_script "server.lua"
 
-file "gui/tcgcard.js"
+files {
+  "gui/tcgcard.js",
+  "images/card_bgnormal.png",
+  "images/card_bgnormal_over.png",
+}

@@ -42,11 +42,26 @@ function loadTCGCard(idname, cbr)
 
 defineDynamicClass("tcgcard", function(el){
   loadTCGCard(el.dataset.name, function(card){
-    el.innerHTML = el.dataset.name;
     if(card){
-      el.innerHTML = card.name+"<br /><img src=\""+card.repository+"images/cards/"+card.picture+"\" />";
-      if(el.dataset.shiny)
-        el.innerHTMl += " (shiny)";
+      var div_over = document.createElement("div");
+      div_over.classList.add("over");
+      el.appendChild(div_over);
+
+      var div_title = document.createElement("div");
+      div_title.classList.add("title");
+      div_title.innerHTML = card.name;
+      el.appendChild(div_title);
+
+      var div_desc = document.createElement("div");
+      div_desc.classList.add("desc");
+      div_desc.innerHTML = card.quote;
+      el.appendChild(div_desc);
+
+      var div_pic = document.createElement("div");
+      div_pic.classList.add("picture");
+      var picture = card.repository+"images/cards/"+card.picture;
+      div_pic.style.backgroundImage = "url(\""+picture+"\")";
+      el.appendChild(div_pic);
     }
   });
 });

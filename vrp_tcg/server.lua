@@ -11,7 +11,7 @@ local cfg = module("vrp_tcg", "cfg/tcg")
 -- define parametric card item
 
 local function card_name(args)
-  return "<span class=\"tcgcard_name\" data-name=\""..(args[2] or "").."\"></span> (TCGcard)"
+  return "<span class=\"tcgcard_name\" data-name=\""..(args[2] or "").."\">"..(args[2] or "").."</span> (TCG)"
 end
 
 local function card_description(args)
@@ -36,8 +36,65 @@ vRP.defInventoryItem({"tcgcard", card_name, card_description, card_choices, card
 
 -- load JS script on first spawn
 
+local css = [[
+.div_vRPtcg_script{
+  display: none;
+}
+
+.tcgcard{
+  position: relative;
+  width: 300px;
+  height: 500px;
+  background-image: url("nui://vrp_tcg/images/card_bgnormal.png");
+}
+
+.tcgcard > .over{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("nui://vrp_tcg/images/card_bgnormal_over.png");
+  z-index: 1;
+}
+
+.tcgcard > .title{
+  position: absolute;
+  top: 37px;
+  left: 4px;
+  width: 250px;
+  height: 46px;
+  padding: 4px;
+  z-index: 2;
+  font-size: 1.4em;
+  font-weight: bold;
+  color: black;
+}
+
+.tcgcard > .desc{
+  position: absolute;
+  left: 17px;
+  top: 325px;
+  width: 268px;
+  height: 150px;
+  padding: 6px;
+  font-style: italic;
+  text-align: center;
+  font-size: 1em;
+  color: rgba(0,0,0,0.75);
+}
+
+.tcgcard > .picture{
+  position: absolute;
+  width: 270px;
+  height: 230px;
+  left: 16px;
+  top: 84px;
+}
+]]
+
 AddEventHandler("vRP:playerSpawn", function(user_id, player, first_spawn)
-  vRPclient.setDiv(player, {"vRPtcg_script", ".div_vRPtcg_script{ display: none; }", ""})
+  vRPclient.setDiv(player, {"vRPtcg_script", css, ""})
 
   local repos_code = ""
   for k,v in pairs(cfg.repositories) do
