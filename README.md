@@ -2,6 +2,8 @@
 
 vRP-TCG is an extension to add a trading card system to vRP.
 
+See and download the "official" repositories here: http://93.115.96.185/fivem/tcg/
+
 ## Items
 
 Two parametric items are added:
@@ -25,7 +27,7 @@ Card JSON structure:
 ```js
 {
   "name": "Name of the card",
-  "picture": "<path relative to images/cards/>",
+  "picture": "<path relative to images/cards/>", //270x230
   "quote": "Description of the card.",
   "rank": 0, //0-4 (common white, uncommon blue, rare yellow, very rare pink, legendary green), it also defines the rarity
   "attack": 5, //optional
