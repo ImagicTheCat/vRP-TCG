@@ -85,6 +85,20 @@ defineDynamicClass("tcgcard", function(el){
       div_rank.classList.add("rank");
       div_rank.style.backgroundImage = "url(\"nui://vrp_tcg/images/rank_"+card.rank+".png\")";
 
+      if(card.attack){
+        var div_attack = document.createElement("div");
+        div_attack.classList.add("attack");
+        div_attack.innerHTML = card.attack;
+        el.appendChild(div_attack);
+      }
+
+      if(card.defense){
+        var div_defense = document.createElement("div");
+        div_defense.classList.add("defense");
+        div_defense.innerHTML = card.defense;
+        el.appendChild(div_defense);
+      }
+
       el.appendChild(div_rank);
     }
   });

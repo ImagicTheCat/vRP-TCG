@@ -17,5 +17,7 @@ files {
   "images/rank_1.png",
   "images/rank_2.png",
   "images/rank_3.png",
-  "images/rank_4.png"
+  "images/rank_4.png",
+  "images/attack.png",
+  "images/defense.png"
 }

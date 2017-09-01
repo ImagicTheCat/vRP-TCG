@@ -82,6 +82,38 @@ local css = [[
   z-index: 3;
 }
 
+.tcgcard > .attack{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 60px;
+  height: 60px;
+  z-index: 3;
+  background-image: url("nui://vrp_tcg/images/attack.png");
+  text-align: center;
+  text-shadow: 0px 0px 15px rgb(255,0,0), 0px 0px 5px rgb(255,0,0);
+  color: white;
+  font-weight: bold;
+  font-size: 1.4em;
+  line-height: 60px;
+}
+
+.tcgcard > .defense{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 60px;
+  height: 60px;
+  z-index: 3;
+  background-image: url("nui://vrp_tcg/images/defense.png");
+  text-align: center;
+  text-shadow: 0px 0px 15px rgb(0,125,255), 0px 0px 5px rgb(0,125,255);
+  color: white;
+  font-weight: bold;
+  font-size: 1.4em;
+  line-height: 60px;
+
+}
 .tcgcard > .title{
   position: absolute;
   top: 37px;
