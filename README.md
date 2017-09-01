@@ -2,7 +2,12 @@
 
 vRP-TCG is an extension to add a trading card system to vRP.
 
-See and download the "official" repositories here: http://93.115.96.185/fivem/tcg/
+You can see and download the "official" repositories here: http://93.115.96.185/fivem/tcg/
+
+## Installation
+
+Just add the resource to your server and load it after vrp.
+You can use "@Give item" with "tcgbooster|0|5" to give yourself a Common booster of 5 cards to check that everything is working.
 
 ## Items
 
@@ -16,7 +21,8 @@ Of course, high ranked boosters should be far more expansive than the low ranked
 ## Cards repository
 
 Cards are defined in repositories, which are direct access http directories with a special structure inside.
-It is recommended to create your own http repositories and copy cards in them to prevents cards from disappearing if a repository creator lose his hosting solution.
+It is recommended to create your own http repositories and copy cards in them to prevents cards from disappearing if a repository creator lose his hosting solution. It also prevents untrusted repository to change their cards content to do malicious things.
+By default, the "official" base repository is added (see the config files).
 
 * `cards.txt`: contains the list of cards in the repository (each line is a card idname), only cards referenced in this file will be availables in boosters
 * `cards/<idname>*.json`: each JSON file define a card (see the format below)
