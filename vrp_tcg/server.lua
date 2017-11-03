@@ -1,13 +1,16 @@
 -- TCG cards in GTA V ? Why not ?
 
-Proxy = module("vrp", "lib/Proxy")
-Tunnel = module("vrp", "lib/Tunnel")
+local Proxy = module("vrp", "lib/Proxy")
+local Tunnel = module("vrp", "lib/Tunnel")
+local Luang = module("vrp", "lib/Luang")
+local cfg = module("vrp_tcg", "cfg/tcg")
+
 vRP = Proxy.getInterface("vRP")
 vRPclient = Tunnel.getInterface("vRP", "vrp_tcg")
-local cfg = module("vrp_tcg", "cfg/tcg")
-local Lang = module("vrp", "lib/Lang")
 
-local lang = Lang.new(module("vrp_tcg", "cfg/lang/"..cfg.lang) or {})
+local Lang = Luang()
+Lang:loadLocale(cfg.lang, module("vrp_tcg", "cfg/lang/"..cfg.lang) or {})
+local lang = Lang.lang[cfg.lang]
 
 -- 1 => 1/100, 50 => 1/2, 160 => 1/1
 -- return true on success
@@ -84,7 +87,7 @@ function open_user_booster(user_id, rank, ncards)
     if v[2] then
       idname = idname.."|s"
     end
-    vRP.giveInventoryItem({user_id,idname,1,true})
+    vRP.giveInventoryItem(user_id,idname,1,true)
   end
 end
 
@@ -166,7 +169,7 @@ local function card_weight(args)
   return 0
 end
 
-vRP.defInventoryItem({"tcgcard", card_name, card_description, card_choices, card_weight})
+vRP.defInventoryItem("tcgcard", card_name, card_description, card_choices, card_weight)
 
 -- define parametric booster ( tcgbooster|rank|ncards )
 
@@ -181,11 +184,11 @@ end
 local function booster_choices(args)
   return {
     [lang.booster.open.title()] = {function(player, choice)
-      local user_id = vRP.getUserId({player})
-      if user_id ~= nil then
-        if vRP.tryGetInventoryItem({user_id, table.concat(args, "|"), 1, false}) then
+      local user_id = vRP.getUserId(player)
+      if user_id then
+        if vRP.tryGetInventoryItem(user_id, table.concat(args, "|"), 1, false) then
           open_user_booster(user_id, parseInt(args[2]), parseInt(args[3]))
-          vRP.closeMenu({player})
+          vRP.closeMenu(player)
         end
       end
     end, lang.booster.open.description()}
@@ -307,14 +310,16 @@ local css = [[
 ]]
 
 AddEventHandler("vRP:playerSpawn", function(user_id, player, first_spawn)
-  vRPclient.setDiv(player, {"vRPtcg_script", css, ""})
+  async(function()
+    vRPclient.setDiv(player, "vRPtcg_script", css, "")
 
-  local repos_code = ""
-  for k,v in pairs(cfg.repositories) do
-    repos_code = repos_code.."addTCGRepository(\""..v.."\");\n"
-  end
+    local repos_code = ""
+    for k,v in pairs(cfg.repositories) do
+      repos_code = repos_code.."addTCGRepository(\""..v.."\");\n"
+    end
 
-  vRPclient.divExecuteJS(player, {"vRPtcg_script", [[ $.getScript("nui://vrp_tcg/gui/tcgcard.js", function(){
-    ]]..repos_code..[[
-  }); ]]})
+    vRPclient.divExecuteJS(player, "vRPtcg_script", [[ $.getScript("nui://vrp_tcg/gui/tcgcard.js", function(){
+      ]]..repos_code..[[
+    }); ]])
+  end, true)
 end)
