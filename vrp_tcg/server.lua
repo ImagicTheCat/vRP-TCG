@@ -199,7 +199,7 @@ local function booster_weight(args)
   return 0
 end
 
-vRP.defInventoryItem({"tcgbooster", booster_name, booster_description, booster_choices, booster_weight})
+vRP.defInventoryItem("tcgbooster", booster_name, booster_description, booster_choices, booster_weight)
 
 -- load JS script on first spawn
 
