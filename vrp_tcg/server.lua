@@ -87,6 +87,7 @@ function open_user_booster(user_id, rank, ncards)
     if v[2] then
       idname = idname.."|s"
     end
+
     vRP.giveInventoryItem(user_id,idname,1,true)
   end
 end
@@ -169,7 +170,9 @@ local function card_weight(args)
   return 0
 end
 
-vRP.defInventoryItem("tcgcard", card_name, card_description, card_choices, card_weight)
+async(function()
+  vRP.defInventoryItem("tcgcard", card_name, card_description, card_choices, card_weight)
+end, true)
 
 -- define parametric booster ( tcgbooster|rank|ncards )
 
@@ -184,13 +187,15 @@ end
 local function booster_choices(args)
   return {
     [lang.booster.open.title()] = {function(player, choice)
-      local user_id = vRP.getUserId(player)
-      if user_id then
-        if vRP.tryGetInventoryItem(user_id, table.concat(args, "|"), 1, false) then
-          open_user_booster(user_id, parseInt(args[2]), parseInt(args[3]))
-          vRP.closeMenu(player)
+      async(function()
+        local user_id = vRP.getUserId(player)
+        if user_id then
+          if vRP.tryGetInventoryItem(user_id, table.concat(args, "|"), 1, false) then
+            open_user_booster(user_id, parseInt(args[2]), parseInt(args[3]))
+            vRP.closeMenu(player)
+          end
         end
-      end
+      end, true)
     end, lang.booster.open.description()}
   }
 end
@@ -199,7 +204,9 @@ local function booster_weight(args)
   return 0
 end
 
-vRP.defInventoryItem("tcgbooster", booster_name, booster_description, booster_choices, booster_weight)
+async(function()
+  vRP.defInventoryItem("tcgbooster", booster_name, booster_description, booster_choices, booster_weight)
+end, true)
 
 -- load JS script on first spawn
 
