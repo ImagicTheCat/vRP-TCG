@@ -170,9 +170,9 @@ local function card_weight(args)
   return 0
 end
 
-async(function()
+Citizen.CreateThread(function()
   vRP.defInventoryItem("tcgcard", card_name, card_description, card_choices, card_weight)
-end, true)
+end)
 
 -- define parametric booster ( tcgbooster|rank|ncards )
 
@@ -187,15 +187,13 @@ end
 local function booster_choices(args)
   return {
     [lang.booster.open.title()] = {function(player, choice)
-      async(function()
-        local user_id = vRP.getUserId(player)
-        if user_id then
-          if vRP.tryGetInventoryItem(user_id, table.concat(args, "|"), 1, false) then
-            open_user_booster(user_id, parseInt(args[2]), parseInt(args[3]))
-            vRP.closeMenu(player)
-          end
+      local user_id = vRP.getUserId(player)
+      if user_id then
+        if vRP.tryGetInventoryItem(user_id, table.concat(args, "|"), 1, false) then
+          open_user_booster(user_id, parseInt(args[2]), parseInt(args[3]))
+          vRP.closeMenu(player)
         end
-      end, true)
+      end
     end, lang.booster.open.description()}
   }
 end
@@ -204,9 +202,9 @@ local function booster_weight(args)
   return 0
 end
 
-async(function()
+Citizen.CreateThread(function()
   vRP.defInventoryItem("tcgbooster", booster_name, booster_description, booster_choices, booster_weight)
-end, true)
+end)
 
 -- load JS script on first spawn
 
@@ -317,16 +315,14 @@ local css = [[
 ]]
 
 AddEventHandler("vRP:playerSpawn", function(user_id, player, first_spawn)
-  async(function()
-    vRPclient.setDiv(player, "vRPtcg_script", css, "")
+  vRPclient.setDiv(player, "vRPtcg_script", css, "")
 
-    local repos_code = ""
-    for k,v in pairs(cfg.repositories) do
-      repos_code = repos_code.."addTCGRepository(\""..v.."\");\n"
-    end
+  local repos_code = ""
+  for k,v in pairs(cfg.repositories) do
+    repos_code = repos_code.."addTCGRepository(\""..v.."\");\n"
+  end
 
-    vRPclient.divExecuteJS(player, "vRPtcg_script", [[ $.getScript("nui://vrp_tcg/gui/tcgcard.js", function(){
-      ]]..repos_code..[[
-    }); ]])
-  end, true)
+  vRPclient.divExecuteJS(player, "vRPtcg_script", [[ $.getScript("nui://vrp_tcg/gui/tcgcard.js", function(){
+    ]]..repos_code..[[
+  }); ]])
 end)
