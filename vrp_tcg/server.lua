@@ -6,7 +6,7 @@ local Luang = module("vrp", "lib/Luang")
 local cfg = module("vrp_tcg", "cfg/tcg")
 
 vRP = Proxy.getInterface("vRP")
-vRPclient = Tunnel.getInterface("vRP", "vrp_tcg")
+vRPclient = Tunnel.getInterface("vRP")
 
 local Lang = Luang()
 Lang:loadLocale(cfg.lang, module("vrp_tcg", "cfg/lang/"..cfg.lang) or {})

@@ -2,7 +2,7 @@
 
 vRP-TCG is an extension to add a trading card system to vRP.
 
-You can see and download the "official" repositories here: http://93.115.96.185/fivem/tcg/
+You can see and download the "official" repositories here: https://github.com/ImagicTheCat/vRP-TCG/tree/vrpex/repositories
 
 ## Installation
 
