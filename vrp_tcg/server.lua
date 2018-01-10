@@ -315,14 +315,14 @@ local css = [[
 ]]
 
 AddEventHandler("vRP:playerSpawn", function(user_id, player, first_spawn)
-  vRPclient.setDiv(player, "vRPtcg_script", css, "")
+  vRPclient._setDiv(player, "vRPtcg_script", css, "")
 
   local repos_code = ""
   for k,v in pairs(cfg.repositories) do
     repos_code = repos_code.."addTCGRepository(\""..v.."\");\n"
   end
 
-  vRPclient.divExecuteJS(player, "vRPtcg_script", [[ $.getScript("nui://vrp_tcg/gui/tcgcard.js", function(){
+  vRPclient._divExecuteJS(player, "vRPtcg_script", [[ $.getScript("nui://vrp_tcg/gui/tcgcard.js", function(){
     ]]..repos_code..[[
   }); ]])
 end)
