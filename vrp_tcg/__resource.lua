@@ -1,6 +1,5 @@
 
 description "vRP TCG"
---ui_page "ui/index.html"
 
 dependency "vrp"
 

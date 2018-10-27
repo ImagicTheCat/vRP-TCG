@@ -7,9 +7,9 @@ function addTCGRepository(url)
 }
 
 // cbreturn card structure or null
-function loadTCGCard(idname, cbr)
+function loadTCGCard(id, cbr)
 {
-  var card = cards[idname];
+  var card = cards[id];
   if(card)
     cbr(card);
   else{
@@ -21,7 +21,7 @@ function loadTCGCard(idname, cbr)
         //request card data
         $.ajax({
           dataType: "json",
-          url: repositories[rep]+"cards/"+idname+".json",
+          url: repositories[rep]+"cards/"+id+".json",
           success: function(data){ //success, card loaded
             data.repository = repositories[rep];
             if(!data.rank) data.rank = 0;
@@ -29,7 +29,7 @@ function loadTCGCard(idname, cbr)
             if(!data.picture) data.picture = "";
             if(!data.name) data.name = "";
 
-            cards[idname] = data;
+            cards[id] = data;
             cbr(data);
           },
           error: function(){ //error, search in another repository
@@ -100,15 +100,6 @@ defineDynamicClass("tcgcard", function(el){
       }
 
       el.appendChild(div_rank);
-    }
-  });
-});
-
-defineDynamicClass("tcgcard_name", function(el){
-  loadTCGCard(el.dataset.name, function(card){
-    el.innerHTML = el.dataset.name;
-    if(card){
-      el.innerHTML = card.name;
     }
   });
 });
